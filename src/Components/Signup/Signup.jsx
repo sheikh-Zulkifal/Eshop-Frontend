@@ -1,47 +1,47 @@
-import {React, useState} from 'react'
+import { React, useState } from "react";
 import { Link } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import styles from "../../styles/styles"
+import styles from "../../styles/styles";
 import { RxAvatar } from "react-icons/rx";
 import axios from "axios";
-import { server } from '../../server';
-import { useNavigate } from 'react-router-dom';
+import { server } from "../../server";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
   const [name, setName] = useState("");
-    const [avatar, setAvatar] = useState(null);
-    const navigate = useNavigate()
+  const [avatar, setAvatar] = useState(null);
+  // const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      const config = {headers: {"Content-Type":"multipart/form-data"}}
-      const newForm = new FormData();
-      newForm.append("file", avatar);
-      newForm.append("name", name);
-      newForm.append("email", email);
-      newForm.append("password", password);
-      
-        axios.post(`${server}/user/create-user`, newForm, config ).then((res) =>{
-          
-          if(res.data.success === true){
-            navigate("/")
-          }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const config = { headers: { "Content-Type": "multipart/form-data" } };
+    const newForm = new FormData();
+    newForm.append("file", avatar);
+    newForm.append("name", name);
+    newForm.append("email", email);
+    newForm.append("password", password);
 
-        }).catch((err) => {
-          console.log(err);
-        } );
-    }
-    const handleFileInputChange = (e) => {
-        const file  = e.target.files[0];
-        setAvatar(file)
-    }
+    axios
+      .post(`${server}/user/create-user`, newForm, config)
+      .then((res) => {
+        alert(res.message);
+        // console.log(newForm)
 
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    setAvatar(file);
+  };
 
   return (
-   <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
           Register as a new user
@@ -49,14 +49,13 @@ function Signup() {
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit} >  
-           
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
                 htmlFor="name"
                 className="block text-sm font-medium text-gray-700"
               >
-               Full Name
+                Full Name
               </label>
               <div className="mt-1">
                 <input
@@ -173,7 +172,6 @@ function Signup() {
       </div>
     </div>
   );
-};
+}
 
-
-export default Signup
+export default Signup;
